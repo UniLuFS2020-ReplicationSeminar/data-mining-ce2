@@ -13,13 +13,18 @@ library(tidyverse)
 
 # 2. save personal API key ----
 api_key <- rstudioapi::askForPassword()
+# add your key in the dialog
 # make sure the key is not pushed to github
 
-# 3. GET requests to guardian.com ----
-base_url <- "https://content.guardianapis.com/search"
-searchterms <- "northern ireland protocol OR northern ireland deal OR windsor framework"
+# 3. construct query URL ----
+base_url <- "https://content.guardianapis.com/search?q="
+searchterms <- "openAI OR chatGPT"
 
-resp <- httr::GET(base_url, 
-                  query = list(key = api_key, q = searchterms))
+query_url <- paste0(base_url, URLencode(searchterms), "&api-key=", api_key)
 
+# 4. GET requests to guardian.com ----
+resp <- httr::GET(query_url)
+
+# check status
 http_status(resp)
+
