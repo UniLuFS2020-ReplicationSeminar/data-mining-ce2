@@ -28,3 +28,15 @@ resp <- httr::GET(query_url)
 # check status
 http_status(resp)
 
+# 5. parse JSON ----
+articles <- fromJSON(httr::content(resp, as = "text"))
+
+# inspect information
+articles$response$results
+
+# 6. create a dataframe ----
+df_articles <- data.frame(title = articles$response$results$webTitle,
+                          section = articles$response$results$sectionName,
+                          url = articles$response$results$webUrl,
+                          date = articles$response$results$webPublicationDate)
+                   
